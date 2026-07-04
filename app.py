@@ -95,6 +95,7 @@ emoji = {
 
 # ---------------- 상단 ----------------
 
+
 left, right = st.columns([5,2])
 
 with left:
