@@ -55,18 +55,18 @@ h1{
     margin-top:25px;
 }
 
-.stButton>button{
-    width:100%;
-    height:65px;
-    border-radius:15px;
-    background:#ff6fae;
-    color:white;
-    font-size:24px;
-    font-weight:bold;
+.stButton > button{
+    height:140px;
+    border-radius:25px;
+    font-size:70px;
+    background:white;
+    border:4px solid #ff6fae;
+    transition:0.2s;
 }
 
-.stButton>button:hover{
-    background:#ff3f8d;
+.stButton > button:hover{
+    transform:scale(1.08);
+    background:#ffe7f2;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -166,18 +166,18 @@ def play(user):
 
 # ---------------- 버튼 ----------------
 
-c1,c2,c3=st.columns(3)
+c1, c2, c3 = st.columns(3)
 
 with c1:
-    if st.button("✌️ 가위"):
+    if st.button("✌️", use_container_width=True):
         play("가위")
 
 with c2:
-    if st.button("✊ 바위"):
+    if st.button("✊", use_container_width=True):
         play("바위")
 
 with c3:
-    if st.button("✋ 보"):
+    if st.button("✋", use_container_width=True):
         play("보")
 
 # 버튼을 누른 후 다시 점수판 갱신
