@@ -95,29 +95,29 @@ emoji = {
 
 # ---------------- 상단 ----------------
 
-score_placeholder = st.empty()
+left, right = st.columns([5,2])
 
-left,right = st.columns([5,2])
+with left:
+    score_placeholder = st.empty()
 
 with right:
     if st.button("🏠 처음으로"):
-        st.session_state.user=0
-        st.session_state.computer=0
-        st.session_state.result=""
-        st.session_state.user_choice=""
-        st.session_state.computer_choice=""
+        st.session_state.user = 0
+        st.session_state.computer = 0
+        st.session_state.result = ""
+        st.session_state.user_choice = ""
+        st.session_state.computer_choice = ""
         st.rerun()
 
-# 점수판
 score_placeholder.markdown(
-f"""
-<div class='score'>
-👤 {st.session_state.user}
-&nbsp;&nbsp;:&nbsp;&nbsp;
-{st.session_state.computer} 💻
-</div>
-""",
-unsafe_allow_html=True
+    f"""
+    <div class='score'>
+    👤 {st.session_state.user}
+    &nbsp;&nbsp;:&nbsp;&nbsp;
+    {st.session_state.computer} 💻
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 # ---------------- 제목 ----------------
