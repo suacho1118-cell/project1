@@ -4,7 +4,7 @@ import random
 st.set_page_config(
     page_title="가위바위보 게임",
     page_icon="🎮",
-    layout="centered"
+    layout="wide"
 )
 
 # ---------------- CSS ----------------
@@ -17,8 +17,8 @@ st.markdown("""
 }
 
 .block-container{
-    max-width:650px;
-    padding-top:50px;
+    max-width:1100px;
+    padding-top:20px;
 }
 
 h1{
@@ -56,9 +56,9 @@ h1{
 }
 
 .stButton > button{
-    height:140px;
+    height:120px;
+    font-size:65px;
     border-radius:25px;
-    font-size:70px;
     background:white;
     border:4px solid #ff6fae;
     transition:0.2s;
@@ -169,16 +169,13 @@ def play(user):
 c1, c2, c3 = st.columns(3)
 
 with c1:
-    if st.button("✌️", use_container_width=True):
-        play("가위")
+    st.button("✌️", use_container_width=True)
 
 with c2:
-    if st.button("✊", use_container_width=True):
-        play("바위")
+    st.button("✊", use_container_width=True)
 
 with c3:
-    if st.button("✋", use_container_width=True):
-        play("보")
+    st.button("✋", use_container_width=True)
 
 # 버튼을 누른 후 다시 점수판 갱신
 score_placeholder.markdown(
