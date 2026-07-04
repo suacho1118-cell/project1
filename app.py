@@ -2,79 +2,76 @@ import streamlit as st
 import random
 
 st.set_page_config(
-    page_title="🎮 가위바위보 게임",
+    page_title="가위바위보 게임",
     page_icon="🎮",
     layout="centered"
 )
 
-# ------------------- CSS -------------------
+# ---------------- CSS ----------------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Do+Hyeon&display=swap');
 
-html, body, [data-testid="stAppViewContainer"]{
+[data-testid="stAppViewContainer"]{
     background:#ffd6eb;
-}
-
-.main{
-    display:flex;
-    justify-content:center;
 }
 
 .block-container{
     max-width:650px;
-    text-align:center;
-    padding-top:30px;
+    padding-top:15px;
 }
 
 h1{
     font-family:'Press Start 2P', cursive;
-    color:#ff2f7d;
     text-align:center;
+    color:#ff2f7d;
+    font-size:36px;
 }
 
-.gamefont{
-    font-family:'Do Hyeon', sans-serif;
-    font-size:28px;
+.game{
+    text-align:center;
+    font-family:'Do Hyeon',sans-serif;
 }
 
 .score{
+    display:inline-block;
     background:white;
-    border-radius:18px;
-    padding:18px;
-    font-size:30px;
+    padding:8px 18px;
+    border-radius:15px;
+    font-size:22px;
     font-weight:bold;
     color:#ff2f7d;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
 
 .result{
     background:white;
-    border-radius:18px;
-    padding:18px;
-    margin-top:20px;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
     font-size:28px;
     font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    margin-top:25px;
 }
 
 .stButton>button{
     width:100%;
-    height:70px;
-    border-radius:18px;
-    font-size:26px;
-    font-weight:bold;
+    height:65px;
+    border-radius:15px;
     background:#ff6fae;
     color:white;
+    font-size:24px;
+    font-weight:bold;
 }
 
 .stButton>button:hover{
-    background:#ff4c96;
+    background:#ff3f8d;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------- 점수 -------------------
+# ---------------- session ----------------
 if "user" not in st.session_state:
     st.session_state.user = 0
 
@@ -84,28 +81,75 @@ if "computer" not in st.session_state:
 if "result" not in st.session_state:
     st.session_state.result = ""
 
-if "computer_choice" not in st.session_state:
-    st.session_state.computer_choice = ""
-
 if "user_choice" not in st.session_state:
     st.session_state.user_choice = ""
 
-# ------------------- 함수 -------------------
-choices = {
+if "computer_choice" not in st.session_state:
+    st.session_state.computer_choice = ""
+
+emoji = {
     "가위":"✌️",
     "바위":"✊",
     "보":"✋"
 }
 
+# ---------------- 상단 ----------------
+
+score_placeholder = st.empty()
+
+left,right = st.columns([5,2])
+
+with right:
+    if st.button("🏠 처음으로"):
+        st.session_state.user=0
+        st.session_state.computer=0
+        st.session_state.result=""
+        st.session_state.user_choice=""
+        st.session_state.computer_choice=""
+        st.rerun()
+
+# 점수판
+score_placeholder.markdown(
+f"""
+<div class='score'>
+👤 {st.session_state.user}
+&nbsp;&nbsp;:&nbsp;&nbsp;
+{st.session_state.computer} 💻
+</div>
+""",
+unsafe_allow_html=True
+)
+
+# ---------------- 제목 ----------------
+st.title("🎮 가위바위보")
+
+st.markdown(
+"<div class='game'><h3>컴퓨터를 이겨보세요!</h3></div>",
+unsafe_allow_html=True
+)
+
+st.markdown(
+"""
+<div style="text-align:center;font-size:90px;">
+✌️ ✊ ✋
+</div>
+""",
+unsafe_allow_html=True
+)
+
+st.write("")
+
+# ---------------- 게임 함수 ----------------
+
 def play(user):
 
-    computer = random.choice(list(choices.keys()))
+    computer=random.choice(["가위","바위","보"])
 
-    st.session_state.user_choice = user
-    st.session_state.computer_choice = computer
+    st.session_state.user_choice=user
+    st.session_state.computer_choice=computer
 
-    if user == computer:
-        st.session_state.result = "😆 무승부!"
+    if user==computer:
+        st.session_state.result="😄 무승부!"
 
     elif (
         (user=="가위" and computer=="보") or
@@ -113,47 +157,15 @@ def play(user):
         (user=="보" and computer=="바위")
     ):
         st.session_state.result="🎉 승리!"
-        st.session_state.user +=1
+        st.session_state.user+=1
 
     else:
         st.session_state.result="😭 패배!"
-        st.session_state.computer +=1
+        st.session_state.computer+=1
 
-# ------------------- 제목 -------------------
-st.title("🎮 가위바위보 게임")
+# ---------------- 버튼 ----------------
 
-st.markdown("<div class='gamefont'>컴퓨터를 이겨보세요!</div>",
-unsafe_allow_html=True)
-
-st.markdown("<br>",unsafe_allow_html=True)
-
-# ------------------- 이미지 -------------------
-st.markdown(
-"""
-<div style="font-size:90px;text-align:center;">
-✌️ ✊ ✋
-</div>
-""",
-unsafe_allow_html=True
-)
-
-st.markdown("<br>",unsafe_allow_html=True)
-
-# ------------------- 점수 -------------------
-st.markdown(
-f"""
-<div class="score">
-💻 컴퓨터 : 👤 사용자 <br><br>
-{st.session_state.computer} : {st.session_state.user}
-</div>
-""",
-unsafe_allow_html=True
-)
-
-st.markdown("<br>",unsafe_allow_html=True)
-
-# ------------------- 버튼 -------------------
-c1,c2,c3 = st.columns(3)
+c1,c2,c3=st.columns(3)
 
 with c1:
     if st.button("✌️ 가위"):
@@ -167,37 +179,49 @@ with c3:
     if st.button("✋ 보"):
         play("보")
 
-# ------------------- 결과 -------------------
-if st.session_state.result != "":
+# 버튼을 누른 후 다시 점수판 갱신
+score_placeholder.markdown(
+f"""
+<div class='score'>
+👤 {st.session_state.user}
+&nbsp;&nbsp;:&nbsp;&nbsp;
+{st.session_state.computer} 💻
+</div>
+""",
+unsafe_allow_html=True
+)
+
+# ---------------- 결과 ----------------
+
+if st.session_state.result:
 
     st.markdown(
     f"""
     <div class="result">
 
-    👤 사용자 : {choices[st.session_state.user_choice]}
-    ({st.session_state.user_choice})
+    <div style="font-size:65px;">
+    {emoji[st.session_state.user_choice]}
+    &nbsp;&nbsp;VS&nbsp;&nbsp;
+    {emoji[st.session_state.computer_choice]}
+    </div>
+
+    <br>
+
+    👤 사용자 :
+    <b>{st.session_state.user_choice}</b>
 
     <br><br>
 
-    💻 컴퓨터 : {choices[st.session_state.computer_choice]}
-    ({st.session_state.computer_choice})
+    💻 컴퓨터 :
+    <b>{st.session_state.computer_choice}</b>
 
     <hr>
 
+    <span style="color:#ff2f7d;">
     {st.session_state.result}
+    </span>
 
     </div>
     """,
     unsafe_allow_html=True
-    )
-
-st.markdown("<br>",unsafe_allow_html=True)
-
-# ------------------- 초기화 -------------------
-if st.button("🔄 처음으로 돌아가기"):
-    st.session_state.user=0
-    st.session_state.computer=0
-    st.session_state.result=""
-    st.session_state.user_choice=""
-    st.session_state.computer_choice=""
-    st.rerun()
+)
